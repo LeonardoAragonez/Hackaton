@@ -1,0 +1,31 @@
+{
+  "name": "ts-design-system",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ts-design-system/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "build-elements": {
+      "executor": "@angular-devkit/build-angular:application",
+      "options": {
+        "outputPath": "dist/packages/ts-design-system/elements",
+        "index": "packages/ts-design-system/src/elements/index.html",
+        "browser": "packages/ts-design-system/src/elements/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "packages/ts-design-system/tsconfig.elements.json",
+        "styles": ["packages/design-tokens/src/index.css"],
+        "scripts": []
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/ts-design-system/jest.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
