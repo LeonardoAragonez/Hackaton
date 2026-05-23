@@ -1,0 +1,50 @@
+# Tractor Store — full stack local deployment
+# Usage: docker compose up --build
+# Frontend: http://localhost:4200  |  API/Swagger: http://localhost:8080/swagger-ui.html
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tractor_store
+      POSTGRES_USER: tractor
+      POSTGRES_PASSWORD: tractor
+    ports:
+      - "5433:5432"  # host 5433 (5432 suele estar ocupado en la máquina)
+    volumes:
+      - tractor_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tractor -d tractor_store"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./tractor-store-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/tractor_store
+      DATABASE_USERNAME: tractor
+      DATABASE_PASSWORD: tractor
+      TRACTOR_CORS_ALLOWED_ORIGINS: http://localhost:4200,http://localhost
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./tractor-store-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    environment:
+      API_URL: http://backend:8080
+    depends_on:
+      - backend
+
+volumes:
+  tractor_pg_data:
