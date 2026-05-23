@@ -1,0 +1,48 @@
+{
+  "name": "mfe-explore",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "explore",
+  "sourceRoot": "packages/mfe-explore/src",
+  "tags": ["scope:explore", "type:mfe"],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/mfe-explore",
+        "index": "packages/mfe-explore/src/index.html",
+        "main": "packages/mfe-explore/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "packages/mfe-explore/tsconfig.app.json",
+        "assets": ["packages/mfe-explore/src/assets"],
+        "styles": ["packages/design-tokens/src/index.css", "packages/mfe-explore/src/styles.scss"],
+        "customWebpackConfig": {
+          "path": "packages/mfe-explore/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [{"type": "initial", "maximumWarning": "2mb", "maximumError": "5mb"}],
+          "outputHashing": "all"
+        },
+        "development": {"optimization": false, "extractLicenses": false, "sourceMap": true}
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:module-federation-dev-server",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201",
+        "buildTarget": "mfe-explore:build:development"
+      },
+      "configurations": {
+        "production": {"buildTarget": "mfe-explore:build:production"},
+        "development": {"buildTarget": "mfe-explore:build:development"}
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {"executor": "@nx/eslint:lint"}
+  }
+}
