@@ -1,0 +1,58 @@
+{
+  "name": "shell",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/shell/src",
+  "tags": ["scope:shell", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/shell",
+        "index": "apps/shell/src/index.html",
+        "main": "apps/shell/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/shell/tsconfig.app.json",
+        "assets": [{ "glob": "**/*", "input": "public", "output": "/" }],
+        "styles": [
+          "packages/design-tokens/src/index.css",
+          "apps/shell/src/styles.scss"
+        ],
+        "customWebpackConfig": {
+          "path": "apps/shell/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/shell/src/environments/environment.ts",
+              "with": "apps/shell/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": { "optimization": false, "sourceMap": true }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:module-federation-dev-server",
+      "options": {
+        "port": 4200,
+        "publicHost": "http://localhost:4200",
+        "buildTarget": "shell:build:development",
+        "proxyConfig": "apps/shell/proxy.conf.json",
+        "skipRemotes": ["mfe-explore", "mfe-decide", "mfe-checkout"]
+      },
+      "configurations": {
+        "production": { "buildTarget": "shell:build:production" },
+        "development": { "buildTarget": "shell:build:development" }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": { "executor": "@nx/eslint:lint" }
+  }
+}
