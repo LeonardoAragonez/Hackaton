@@ -2,7 +2,7 @@
 
 Implementación full stack del [Tractor Store 2.0](https://micro-frontends.org/tractor-store/): tienda modular con **micro frontends** (Angular) y **monolito modular** (Spring Boot), empaquetados en un **monorepo** único.
 
-> Reemplaza `ORG/REPO` en los badges por tu organización y nombre de repositorio en GitHub.
+
 
 [![CI/CD](https://github.com/ORG/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/ORG/REPO/actions/workflows/ci.yml)
 
@@ -35,7 +35,7 @@ Implementación full stack del [Tractor Store 2.0](https://micro-frontends.org/t
 | **Datos** | **PostgreSQL**, migraciones **Flyway**, seed JSON al arranque |
 | **Calidad** | Tests Jest (UI/shared), Playwright E2E, WebMvcTest/integración backend, **ArchUnit** y verificación Modulith |
 | **DevOps** | `docker-compose.yml`, Dockerfiles, pipeline **GitHub Actions** con ejecución condicional por paths |
-| **Docs** | ADRs, guías de despliegue, contribución, testing y Git |
+| **Docs** | README, ADRs, TESTING.md, DEPLOYMENT.md, CONTRIBUTING.md (según guía del reto) |
 
 Flujo de negocio cubierto: **explorar catálogo → elegir producto/variante → carrito → checkout → pedido**, alineado con el blueprint oficial.
 
@@ -294,7 +294,7 @@ flowchart TD
 
 [Dependabot](./.github/dependabot.yml) abre PRs semanales para npm (frontend), Maven (backend) y GitHub Actions.
 
-Más detalle: [GIT-GITHUB.md](./GIT-GITHUB.md).
+Más detalle del flujo Git y Actions: [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ---
 
@@ -394,17 +394,20 @@ Ver [tractor-store-backend/TESTING.md](./tractor-store-backend/TESTING.md) y [tr
 
 ---
 
-## Documentación adicional
+## Documentación del reto
 
-| Documento | Contenido |
-|-----------|-----------|
-| [GUIA-COMPLETAR-100.md](./GUIA-COMPLETAR-100.md) | Checklist local + Sonar + deploy |
-| [GIT-GITHUB.md](./GIT-GITHUB.md) | Commits, monorepo y Actions |
-| [DEPLOYMENT.md](./DEPLOYMENT.md) | Despliegue y rollback |
-| [CONTRIBUTING.md](./CONTRIBUTING.md) | Flujo de contribución y PR |
-| [tractor-store-frontend/README.md](./tractor-store-frontend/README.md) | Detalle frontend |
-| [tractor-store-backend/README.md](./tractor-store-backend/README.md) | Detalle backend |
-| ADRs | `*/docs/adr/` en frontend y backend |
+Según la guía de aprendizaje Tractor Store:
+
+| Documento | Obligatorio | Ubicación |
+|-----------|-------------|-----------|
+| README monorepo | Sesiones 1–2 | Este archivo |
+| README por stack | Sesiones 1–2 | [frontend](./tractor-store-frontend/README.md), [backend](./tractor-store-backend/README.md) |
+| TESTING.md | Sesiones 1–2 | [frontend](./tractor-store-frontend/TESTING.md), [backend](./tractor-store-backend/TESTING.md) |
+| ADRs | Sesiones 1–2 | [frontend/docs/adr/](./tractor-store-frontend/docs/adr/), [backend/docs/adr/](./tractor-store-backend/docs/adr/) |
+| DEPLOYMENT.md | Sesión 3 | [DEPLOYMENT.md](./DEPLOYMENT.md) |
+| CONTRIBUTING.md + plantilla PR | Sesión 3 | [CONTRIBUTING.md](./CONTRIBUTING.md), [.github/PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md) |
+
+Los archivos `GUIA-COMPLETAR-100.md` y `GIT-GITHUB.md` **no** forman parte de los entregables oficiales; eran notas internas opcionales y no es necesario crearlos para el reto.
 
 ---
 

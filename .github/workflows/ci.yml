@@ -38,8 +38,6 @@ jobs:
               - 'README.md'
               - 'CONTRIBUTING.md'
               - 'DEPLOYMENT.md'
-              - 'GUIA-COMPLETAR-100.md'
-              - 'GIT-GITHUB.md'
 
   backend:
     name: Backend (Java / Maven)
