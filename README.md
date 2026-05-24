@@ -2,9 +2,7 @@
 
 Implementación full stack del [Tractor Store 2.0](https://micro-frontends.org/tractor-store/): tienda modular con **micro frontends** (Angular) y **monolito modular** (Spring Boot), empaquetados en un **monorepo** único.
 
-
-
-[![CI/CD](https://github.com/ORG/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/ORG/REPO/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/LeonardoAragonez/Hackaton/actions/workflows/ci.yml/badge.svg)](https://github.com/LeonardoAragonez/Hackaton/actions/workflows/ci.yml)
 
 ---
 
