@@ -164,7 +164,7 @@ jobs:
       - name: Verificar reportes de cobertura
         run: |
           test -f tractor-store-backend/target/site/jacoco/jacoco.xml
-          ls tractor-store-frontend/coverage/**/lcov.info
+          find tractor-store-frontend/coverage -name 'lcov.info' -print | tee /dev/stderr | grep -q .
 
       - uses: SonarSource/sonarqube-scan-action@v4
         env:
