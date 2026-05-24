@@ -125,8 +125,7 @@ jobs:
     if: |
       always() &&
       needs.backend.result == 'success' &&
-      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
-      secrets.SONAR_TOKEN != ''
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     defaults:
       run:
         working-directory: tractor-store-backend
@@ -144,6 +143,7 @@ jobs:
 
       - run: mvn -B verify
 
+      # secrets no se pueden usar en job `if`; sin SONAR_TOKEN este paso falla pero no rompe el pipeline
       - uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -156,8 +156,7 @@ jobs:
     if: |
       always() &&
       needs.frontend.result == 'success' &&
-      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
-      secrets.SONAR_TOKEN != ''
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     defaults:
       run:
         working-directory: tractor-store-frontend
