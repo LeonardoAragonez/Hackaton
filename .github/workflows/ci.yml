@@ -103,8 +103,15 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Unit tests
-        run: pnpm test
+      - name: Unit tests with coverage
+        run: pnpm test:coverage
+
+      - name: Upload frontend coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: tractor-store-frontend/coverage/
 
       - name: Production build
         run: pnpm build
@@ -118,7 +125,8 @@ jobs:
     if: |
       always() &&
       needs.backend.result == 'success' &&
-      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      secrets.SONAR_TOKEN != ''
     defaults:
       run:
         working-directory: tractor-store-backend
@@ -148,7 +156,8 @@ jobs:
     if: |
       always() &&
       needs.frontend.result == 'success' &&
-      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      secrets.SONAR_TOKEN != ''
     defaults:
       run:
         working-directory: tractor-store-frontend
