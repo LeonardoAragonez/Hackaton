@@ -18,6 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,5 +78,66 @@ class CartServiceTest {
         cartService.addItem("s1", "AU-01-SI");
 
         verify(itemRepository).save(any(CartItemEntity.class));
+    }
+
+    @Test
+    void addItemFailsWhenInsufficientStockInCart() {
+        when(inventoryFacade.availableQuantity("AU-01-SI")).thenReturn(2);
+        var existing = new CartItemEntity();
+        existing.setSku("AU-01-SI");
+        existing.setQuantity(2);
+        when(itemRepository.findBySessionIdAndSku("s1", "AU-01-SI")).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> cartService.addItem("s1", "AU-01-SI"))
+                .isInstanceOf(ApiException.class)
+                .hasMessageContaining("No more units");
+    }
+
+    @Test
+    void addItemIncrementsExistingLine() {
+        when(inventoryFacade.availableQuantity("AU-01-SI")).thenReturn(5);
+        var existing = new CartItemEntity();
+        existing.setSku("AU-01-SI");
+        existing.setQuantity(1);
+        when(itemRepository.findBySessionIdAndSku("s1", "AU-01-SI")).thenReturn(Optional.of(existing));
+        when(itemRepository.findBySessionId("s1")).thenReturn(List.of(existing));
+
+        cartService.addItem("s1", "AU-01-SI");
+
+        assertThat(existing.getQuantity()).isEqualTo(2);
+        verify(itemRepository).save(existing);
+    }
+
+    @Test
+    void removeItemDecrementsQuantity() {
+        var existing = new CartItemEntity();
+        existing.setSku("AU-01-SI");
+        existing.setQuantity(2);
+        when(itemRepository.findBySessionIdAndSku("s1", "AU-01-SI")).thenReturn(Optional.of(existing));
+        when(itemRepository.findBySessionId("s1")).thenReturn(List.of(existing));
+
+        cartService.removeItem("s1", "AU-01-SI");
+
+        assertThat(existing.getQuantity()).isEqualTo(1);
+        verify(itemRepository, never()).delete(existing);
+    }
+
+    @Test
+    void removeItemDeletesLastUnit() {
+        var existing = new CartItemEntity();
+        existing.setSku("AU-01-SI");
+        existing.setQuantity(1);
+        when(itemRepository.findBySessionIdAndSku("s1", "AU-01-SI")).thenReturn(Optional.of(existing));
+        when(itemRepository.findBySessionId("s1")).thenReturn(List.of());
+
+        cartService.removeItem("s1", "AU-01-SI");
+
+        verify(itemRepository).delete(existing);
+    }
+
+    @Test
+    void clearRemovesAllLines() {
+        cartService.clear("s1");
+        verify(itemRepository).deleteBySessionId(eq("s1"));
     }
 }

@@ -24,6 +24,13 @@ class CatalogFacadeTest {
     private CatalogFacade catalogFacade;
 
     @Test
+    void findVariantEmptyWhenMissing() {
+        when(queryService.findVariantBySku("X")).thenReturn(Optional.empty());
+
+        assertThat(catalogFacade.findVariant("X")).isEmpty();
+    }
+
+    @Test
     void findVariantMapsSnapshot() {
         when(queryService.findVariantBySku("AU-01"))
                 .thenReturn(Optional.of(new CatalogQueryService.VariantView("AU-01", "P1", "Tractor", "/t.webp", 1000)));
@@ -53,6 +60,13 @@ class CatalogFacadeTest {
 
         assertThat(store).isPresent();
         assertThat(store.get().name()).isEqualTo("Main");
+    }
+
+    @Test
+    void findStoreEmptyWhenMissing() {
+        when(queryService.findStoreById("X")).thenReturn(Optional.empty());
+
+        assertThat(catalogFacade.findStore("X")).isEmpty();
     }
 
     @Test

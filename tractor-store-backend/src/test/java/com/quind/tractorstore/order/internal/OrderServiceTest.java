@@ -225,6 +225,26 @@ class OrderServiceTest {
         assertThat(response.shipping()).isNull();
     }
 
+    @Test
+    void getOrderReturnsNullPickupWhenStoreNotFound() {
+        var orderId = UUID.randomUUID();
+        var order = new OrderEntity();
+        order.setOrderId(orderId);
+        order.setStatus("PLACED");
+        order.setTotalAmount(1000);
+        order.setCreatedAt(Instant.now());
+        order.setFulfillmentType("PICKUP");
+        order.setPickupStoreId("gone");
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderLineRepository.findByOrderId(orderId)).thenReturn(List.of());
+        when(catalogFacade.findStore("gone")).thenReturn(Optional.empty());
+
+        var response = orderService.getOrder(orderId);
+
+        assertThat(response.pickupStore()).isNull();
+    }
+
     private static CartSnapshot sampleCart() {
         var line = new CartSnapshot.CartLineSnapshot("AU-01", "Tractor", "/t.webp", 1, 2000, 2000);
         return new CartSnapshot("sess-1", List.of(line), 1, 2000);
