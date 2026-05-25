@@ -6,9 +6,10 @@ import {
   CART_API_URL,
   CATALOG_API_URL,
   CDN_BASE_URL,
-} from '../../../../shared-catalog/src/lib/tokens/api.tokens';
-import { ToastService } from '../../../../shared-catalog/src/lib/ux/toast.service';
-import { ok, err } from '../../../../shared-catalog/src/lib/result/result';
+  ToastService,
+  ok,
+  err,
+} from '@tractor-store/shared-catalog';
 
 import { DecideFacade } from './decide.facade';
 import { DecideApiService } from '../data/decide-api.service';

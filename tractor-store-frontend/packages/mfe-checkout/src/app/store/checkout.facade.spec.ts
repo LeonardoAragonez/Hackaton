@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import {
-  CDN_BASE_URL,
-} from '../../../../shared-catalog/src/lib/tokens/api.tokens';
-import { ok, err } from '../../../../shared-catalog/src/lib/result/result';
+import { CDN_BASE_URL, ok, err } from '@tractor-store/shared-catalog';
 
 import { CheckoutFacade } from './checkout.facade';
 import { CheckoutApiService } from '../data/checkout-api.service';
