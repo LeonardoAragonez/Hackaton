@@ -178,10 +178,17 @@ jobs:
           find tractor-store-frontend/coverage -name 'lcov.info' -print | tee /dev/stderr | grep -q .
           grep -m1 '^SF:tractor-store-frontend/' tractor-store-frontend/coverage/packages/shared-catalog/lcov.info
 
-      - uses: SonarSource/sonarqube-scan-action@v4
+      - name: SonarCloud scan (con cobertura en esta rama)
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        continue-on-error: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.branch.name=${{ github.head_ref || github.ref_name }}
+            -Dsonar.java.coveragePlugin=jacoco
+            -Dsonar.coverage.jacoco.xmlReportPaths=tractor-store-backend/target/site/jacoco/jacoco.xml
+            -Dsonar.typescript.lcov.reportPaths=tractor-store-frontend/coverage/packages/shared-catalog/lcov.info,tractor-store-frontend/coverage/packages/ts-design-system/lcov.info
 
   sonar-backend:
     name: SonarCloud (backend)
