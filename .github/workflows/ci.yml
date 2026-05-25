@@ -161,10 +161,22 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm test:coverage
 
+      # lcov se genera con rutas relativas a tractor-store-frontend/ (packages/...).
+      # Sonar analiza desde la raíz del repo → hay que prefijar tractor-store-frontend/
+      - name: Ajustar rutas lcov para Sonar (monorepo)
+        run: |
+          find tractor-store-frontend/coverage -name 'lcov.info' -print0 | while IFS= read -r -d '' f; do
+            sed -i -E \
+              -e 's|^SF:packages/|SF:tractor-store-frontend/packages/|g' \
+              -e 's|^SF:apps/|SF:tractor-store-frontend/apps/|g' \
+              "$f"
+          done
+
       - name: Verificar reportes de cobertura
         run: |
           test -f tractor-store-backend/target/site/jacoco/jacoco.xml
           find tractor-store-frontend/coverage -name 'lcov.info' -print | tee /dev/stderr | grep -q .
+          grep -m1 '^SF:tractor-store-frontend/' tractor-store-frontend/coverage/packages/shared-catalog/lcov.info
 
       - uses: SonarSource/sonarqube-scan-action@v4
         env:
