@@ -35,7 +35,7 @@ class InventoryServiceTest {
 
         assertThat(response.sku()).isEqualTo("AU-01");
         assertThat(response.quantity()).isEqualTo(4);
-        assertThat(response.inStock()).isTrue();
+        assertThat(response.available()).isTrue();
     }
 
     @Test

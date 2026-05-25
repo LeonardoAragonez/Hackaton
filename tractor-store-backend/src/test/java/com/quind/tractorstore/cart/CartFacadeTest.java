@@ -45,8 +45,8 @@ class CartFacadeTest {
 
         assertThat(snapshot.sessionId()).isEqualTo("s1");
         assertThat(snapshot.itemCount()).isEqualTo(2);
-        assertThat(snapshot.lines()).hasSize(1);
-        assertThat(snapshot.lines().getFirst().sku()).isEqualTo("SKU");
+        assertThat(snapshot.items()).hasSize(1);
+        assertThat(snapshot.items().getFirst().sku()).isEqualTo("SKU");
     }
 
     @Test
