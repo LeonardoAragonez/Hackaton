@@ -163,7 +163,7 @@ jobs:
 
       # lcov se genera con rutas relativas a tractor-store-frontend/ (packages/...).
       # Sonar analiza desde la raíz del repo → hay que prefijar tractor-store-frontend/
-      - name: Ajustar rutas lcov para Sonar (monorepo)
+      - name: Preparar lcov unificado para Sonar (monorepo)
         run: |
           find tractor-store-frontend/coverage -name 'lcov.info' -print0 | while IFS= read -r -d '' f; do
             sed -i -E \
@@ -171,12 +171,16 @@ jobs:
               -e 's|^SF:apps/|SF:tractor-store-frontend/apps/|g' \
               "$f"
           done
+          : > tractor-store-frontend/coverage/lcov.merged.info
+          find tractor-store-frontend/coverage/packages -name 'lcov.info' -print0 | while IFS= read -r -d '' f; do
+            cat "$f" >> tractor-store-frontend/coverage/lcov.merged.info
+          done
 
       - name: Verificar reportes de cobertura
         run: |
           test -f tractor-store-backend/target/site/jacoco/jacoco.xml
-          find tractor-store-frontend/coverage -name 'lcov.info' -print | tee /dev/stderr | grep -q .
-          grep -m1 '^SF:tractor-store-frontend/' tractor-store-frontend/coverage/packages/shared-catalog/lcov.info
+          test -s tractor-store-frontend/coverage/lcov.merged.info
+          grep -m1 '^SF:tractor-store-frontend/' tractor-store-frontend/coverage/lcov.merged.info
 
       - name: SonarCloud scan (con cobertura en esta rama)
         uses: SonarSource/sonarqube-scan-action@v6
@@ -184,11 +188,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: >
-            -Dsonar.branch.name=${{ github.head_ref || github.ref_name }}
-            -Dsonar.java.coveragePlugin=jacoco
-            -Dsonar.coverage.jacoco.xmlReportPaths=tractor-store-backend/target/site/jacoco/jacoco.xml
-            -Dsonar.typescript.lcov.reportPaths=tractor-store-frontend/coverage/packages/shared-catalog/lcov.info,tractor-store-frontend/coverage/packages/ts-design-system/lcov.info
+          args: -Dsonar.branch.name=${{ github.head_ref || github.ref_name }}
 
   sonar-backend:
     name: SonarCloud (backend)
