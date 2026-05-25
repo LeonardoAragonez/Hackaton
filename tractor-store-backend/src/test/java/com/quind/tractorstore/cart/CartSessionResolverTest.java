@@ -69,4 +69,35 @@ class CartSessionResolverTest {
         assertThat(resolver.resolveSessionId(request, response)).isNotBlank();
         verify(sessionRepository).save(any());
     }
+
+    @Test
+    void readSessionIdReturnsValueWhenCookieValid() {
+        when(properties.cart())
+                .thenReturn(new TractorProperties.Cart("CART_SESSION", 30, "/"));
+        when(sessionRepository.existsById("existing")).thenReturn(true);
+
+        var request = new MockHttpServletRequest();
+        request.setCookies(new Cookie("CART_SESSION", "existing"));
+
+        assertThat(resolver.readSessionId(request)).contains("existing");
+    }
+
+    @Test
+    void readSessionIdEmptyWhenNoCookies() {
+        when(properties.cart())
+                .thenReturn(new TractorProperties.Cart("CART_SESSION", 30, "/"));
+
+        assertThat(resolver.readSessionId(new MockHttpServletRequest())).isEmpty();
+    }
+
+    @Test
+    void writeCookieSetsHeader() {
+        when(properties.cart())
+                .thenReturn(new TractorProperties.Cart("CART_SESSION", 30, "/"));
+        var response = new MockHttpServletResponse();
+
+        resolver.writeCookie(response, "session-abc");
+
+        assertThat(response.getHeader("Set-Cookie")).contains("CART_SESSION=session-abc");
+    }
 }

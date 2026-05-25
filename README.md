@@ -377,7 +377,7 @@ Incluye `shared-catalog`, `ts-design-system` y tests unitarios de selectores en 
 3. La cobertura en Sonar cuenta **lógica de negocio** (`shared-catalog`, `ts-design-system`, servicios Java); UI Angular, entidades JPA y DTOs van en `sonar.coverage.exclusions` (ver `sonar-project.properties`).
 4. Job **SonarCloud (Hackaton monorepo)** verde tras cada push.
 
-**Quality Gate (80 % en código nuevo):** tras añadir tests, el commit nuevo debe incluir specs (p. ej. `bootstrap-error.util.spec.ts`). Si falla por las 3 *issues*, revísalas en **Issues** → **New**.
+**Quality Gate (80 % en código nuevo):** el gate **no** usa el 49 % de *Overall Code*; exige **≥ 80 % de cobertura en las líneas que cambiaste** en la rama (p. ej. `feature/develop`). Si ves *57 % on 5 New Lines*, añade tests en backend (`OrderService`, `InventoryFacade`, `CatalogFacade`, `CartSessionResolver`) o en `shared-catalog` (`bootstrap-error.util.spec.ts`). El job **SonarCloud (Hackaton monorepo)** debe pasar en verde tras el push. Las *3 New Issues* son aparte: revísalas en **Issues** → **New**.
 
 ### Build de producción (local)
 

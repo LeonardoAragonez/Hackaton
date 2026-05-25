@@ -66,4 +66,30 @@ class InventoryServiceTest {
         assertThat(inventoryService.reserve("AU-01", 2)).isTrue();
         assertThat(entity.getQuantity()).isEqualTo(3);
     }
+
+    @Test
+    void getQuantityReturnsZeroWhenSkuMissing() {
+        when(repository.findById("UNKNOWN")).thenReturn(Optional.empty());
+
+        assertThat(inventoryService.getQuantity("UNKNOWN")).isZero();
+    }
+
+    @Test
+    void reserveReturnsFalseWhenSkuMissing() {
+        when(repository.findBySkuForUpdate("UNKNOWN")).thenReturn(Optional.empty());
+
+        assertThat(inventoryService.reserve("UNKNOWN", 1)).isFalse();
+    }
+
+    @Test
+    void getInventoryMarksUnavailableWhenQuantityZero() {
+        var entity = new InventoryItemEntity();
+        entity.setSku("AU-01");
+        entity.setQuantity(0);
+        when(repository.findById("AU-01")).thenReturn(Optional.of(entity));
+
+        var response = inventoryService.getInventory("AU-01");
+
+        assertThat(response.available()).isFalse();
+    }
 }
