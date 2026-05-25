@@ -19,6 +19,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -85,5 +86,28 @@ class CartControllerTest {
                         .content(objectMapper.writeValueAsString(new CartDtos.AddCartItemRequest("AU-01-SI"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.itemCount").value(1));
+    }
+
+    @Test
+    void miniCartReturnsCounters() throws Exception {
+        when(sessionResolver.resolveSessionId(any(), any())).thenReturn("sess-2");
+        when(cartService.getMiniCart("sess-2"))
+                .thenReturn(new CartDtos.MiniCartResponse(2, 2500));
+
+        mockMvc.perform(get("/api/cart/mini"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemCount").value(2))
+                .andExpect(jsonPath("$.total").value(2500));
+    }
+
+    @Test
+    void removeItemDelegatesToService() throws Exception {
+        when(sessionResolver.resolveSessionId(any(), any())).thenReturn("sess-3");
+        when(cartService.removeItem(eq("sess-3"), eq("AU-01-SI")))
+                .thenReturn(new CartDtos.CartResponse("sess-3", List.of(), 0, 0));
+
+        mockMvc.perform(delete("/api/cart/items/AU-01-SI"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.itemCount").value(0));
     }
 }

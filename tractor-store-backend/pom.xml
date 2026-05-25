@@ -160,6 +160,7 @@
             <exclude>com/quind/tractorstore/TractorStoreApplication.class</exclude>
             <exclude>com/quind/tractorstore/**/package-info.class</exclude>
             <exclude>com/quind/tractorstore/**/api/*Dtos.class</exclude>
+            <exclude>com/quind/tractorstore/**/api/*Dtos$*.class</exclude>
             <exclude>com/quind/tractorstore/shared/config/OpenApiConfig.class</exclude>
             <exclude>com/quind/tractorstore/shared/config/WebConfig.class</exclude>
           </excludes>

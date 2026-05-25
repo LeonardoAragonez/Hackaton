@@ -39,7 +39,7 @@ describe('decideSelectors', () => {
   it('exposes loading and cart message fields', () => {
     const state: DecideState = {
       product: null,
-      selectedSku: null,
+      selectedSku: 'SKU-9',
       recommendations: [{ sku: 'x' } as never],
       loading: true,
       error: 'e',
@@ -47,7 +47,11 @@ describe('decideSelectors', () => {
       cartMessageKind: 'success',
       stockAvailable: 5,
     };
+    expect(decideSelectors.product(state)).toBeNull();
+    expect(decideSelectors.selectedSku(state)).toBe('SKU-9');
     expect(decideSelectors.loading(state)).toBe(true);
+    expect(decideSelectors.error(state)).toBe('e');
+    expect(decideSelectors.cartMessageKind(state)).toBe('success');
     expect(decideSelectors.cartMessage(state)).toBe('added');
     expect(decideSelectors.stockAvailable(state)).toBe(5);
     expect(decideSelectors.recommendations(state)).toHaveLength(1);

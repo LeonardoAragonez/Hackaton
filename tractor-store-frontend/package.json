@@ -35,14 +35,13 @@
     "@angular-devkit/build-angular": "19.2.0",
     "@angular/cli": "19.2.0",
     "@angular/compiler-cli": "19.2.0",
-    "@nx/angular": "21.4.0",
-    "@nx/module-federation": "21.4.0",
+    "@jest/reporters": "^30.4.1",
     "@module-federation/enhanced": "0.9.1",
-    "ts-jest": "^29.2.5",
-    "ng-packagr": "^19.2.0",
+    "@nx/angular": "21.4.0",
     "@nx/eslint": "21.4.0",
     "@nx/eslint-plugin": "21.4.0",
     "@nx/jest": "21.4.0",
+    "@nx/module-federation": "21.4.0",
     "@nx/playwright": "21.4.0",
     "@nx/workspace": "21.4.0",
     "@playwright/test": "^1.49.0",
@@ -57,15 +56,19 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-preset-angular": "^14.4.2",
     "msw": "^2.7.0",
+    "ng-packagr": "^19.2.0",
     "nx": "21.4.0",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
+    "ts-jest": "^29.2.5",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.18.0"
   },
   "msw": {
-    "workerDirectory": ["apps/shell/public"]
+    "workerDirectory": [
+      "apps/shell/public"
+    ]
   },
   "pnpm": {
     "overrides": {
