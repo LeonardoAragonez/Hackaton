@@ -124,7 +124,11 @@ class OrderServiceTest {
 
         assertThatThrownBy(() -> orderService.placeOrder("sess-1", request))
                 .isInstanceOf(ApiException.class)
-                .hasMessageContaining("storeId");
+                .satisfies(ex -> {
+                    var api = (ApiException) ex;
+                    assertThat(api.getMessage()).contains("Store");
+                    assertThat(api.getDetails()).containsEntry("storeId", "Store is required for pickup");
+                });
     }
 
     @Test
