@@ -161,12 +161,21 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm test:coverage
 
+      # Jest escribe SF:packages/...; Sonar indexa tractor-store-frontend/packages/... desde la raíz
+      - name: Preparar lcov con rutas del monorepo
+        run: |
+          out=tractor-store-frontend/coverage/lcov.sonar.info
+          : > "$out"
+          for f in tractor-store-frontend/coverage/packages/*/lcov.info; do
+            sed 's|^SF:packages/|SF:tractor-store-frontend/packages/|; s|^SF:apps/|SF:tractor-store-frontend/apps/|' "$f" >> "$out"
+          done
+          wc -l "$out"
+          grep -m1 '^SF:tractor-store-frontend/packages/' "$out"
+
       - name: Verificar reportes de cobertura
         run: |
           test -f tractor-store-backend/target/site/jacoco/jacoco.xml
-          test -f tractor-store-frontend/coverage/packages/shared-catalog/lcov.info
-          test -f tractor-store-frontend/coverage/packages/ts-design-system/lcov.info
-          grep -m1 '^SF:packages/' tractor-store-frontend/coverage/packages/shared-catalog/lcov.info
+          test -s tractor-store-frontend/coverage/lcov.sonar.info
 
       - name: SonarCloud scan (con cobertura en esta rama)
         uses: SonarSource/sonarqube-scan-action@v6
@@ -234,7 +243,7 @@ jobs:
           cache-dependency-path: tractor-store-frontend/pnpm-lock.yaml
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test:coverage || pnpm test
+      - run: pnpm test:coverage
 
       - uses: SonarSource/sonarqube-scan-action@v6
         env:
