@@ -45,7 +45,6 @@ class CartSessionResolverTest {
     void resolveSessionIdCreatesSessionWhenCookieMissing() {
         when(properties.cart())
                 .thenReturn(new TractorProperties.Cart("CART_SESSION", 30, "/"));
-        when(sessionRepository.existsById(any())).thenReturn(false);
 
         var request = new MockHttpServletRequest();
         var response = new MockHttpServletResponse();
@@ -55,5 +54,19 @@ class CartSessionResolverTest {
         assertThat(sessionId).isNotBlank();
         verify(sessionRepository).save(any());
         assertThat(response.getHeader("Set-Cookie")).contains("CART_SESSION=");
+    }
+
+    @Test
+    void resolveSessionIdCreatesSessionWhenCookieNotInDatabase() {
+        when(properties.cart())
+                .thenReturn(new TractorProperties.Cart("CART_SESSION", 30, "/"));
+        when(sessionRepository.existsById("stale")).thenReturn(false);
+
+        var request = new MockHttpServletRequest();
+        request.setCookies(new Cookie("CART_SESSION", "stale"));
+        var response = new MockHttpServletResponse();
+
+        assertThat(resolver.resolveSessionId(request, response)).isNotBlank();
+        verify(sessionRepository).save(any());
     }
 }
