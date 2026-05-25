@@ -365,11 +365,19 @@ pnpm test:coverage
 
 Incluye `shared-catalog`, `ts-design-system` y tests unitarios de selectores en los MFE (`mfe-explore`, `mfe-decide`, `mfe-checkout`).
 
-**SonarCloud — ver cobertura en Summary**
+**SonarCloud — cobertura y Summary**
 
-1. Proyecto **Hackaton** → pestaña **Overall Code** (no solo *New Code*; ahí puede decir “not enough lines”).
-2. **Measures** → **Coverage** para el desglose backend / frontend.
-3. Tras push, el job **SonarCloud (Hackaton monorepo)** debe estar verde.
+| Pestaña en Summary | Qué muestra |
+|--------------------|-------------|
+| **Overall Code** | % global (backend + frontend medidos) |
+| **New Code** | Solo cambios recientes; exige tests en lo que acabas de commitear |
+
+1. En **Summary**, arriba, cambia **New Code** → **Overall Code** para ver el % total.
+2. **Measures** → **Coverage** → desglose por carpeta.
+3. La cobertura en Sonar cuenta **lógica de negocio** (`shared-catalog`, `ts-design-system`, servicios Java); UI Angular, entidades JPA y DTOs van en `sonar.coverage.exclusions` (ver `sonar-project.properties`).
+4. Job **SonarCloud (Hackaton monorepo)** verde tras cada push.
+
+**Quality Gate (80 % en código nuevo):** tras añadir tests, el commit nuevo debe incluir specs (p. ej. `bootstrap-error.util.spec.ts`). Si falla por las 3 *issues*, revísalas en **Issues** → **New**.
 
 ### Build de producción (local)
 
