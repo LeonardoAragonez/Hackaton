@@ -84,9 +84,6 @@ class CartSessionResolverTest {
 
     @Test
     void readSessionIdEmptyWhenNoCookies() {
-        when(properties.cart())
-                .thenReturn(new TractorProperties.Cart("CART_SESSION", 30, "/"));
-
         assertThat(resolver.readSessionId(new MockHttpServletRequest())).isEmpty();
     }
 
