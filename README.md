@@ -287,7 +287,7 @@ flowchart TD
 |-----|-------------|--------|
 | **Backend** | Maven 21 | `mvn verify`, artefacto JaCoCo |
 | **Frontend** | pnpm 9, Node 20 | `pnpm lint`, `pnpm test`, `pnpm build` |
-| **SonarCloud** | Sonar scan | Requiere secret `SONAR_TOKEN` |
+| **SonarCloud** | Sonar scan | Secret `SONAR_TOKEN`; en SonarCloud desactivar **Automatic Analysis** (solo CI con cobertura) |
 | **Docker** | `docker build` | Solo en push a `main` |
 
 [Dependabot](./.github/dependabot.yml) abre PRs semanales para npm (frontend), Maven (backend) y GitHub Actions.

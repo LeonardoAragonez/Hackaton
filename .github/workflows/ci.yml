@@ -179,7 +179,7 @@ jobs:
           grep -m1 '^SF:tractor-store-frontend/' tractor-store-frontend/coverage/packages/shared-catalog/lcov.info
 
       - name: SonarCloud scan (con cobertura en esta rama)
-        uses: SonarSource/sonarqube-scan-action@v4
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -216,7 +216,7 @@ jobs:
       - run: mvn -B verify
 
       # secrets no se pueden usar en job `if`; sin SONAR_TOKEN este paso falla pero no rompe el pipeline
-      - uses: SonarSource/sonarqube-scan-action@v4
+      - uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         continue-on-error: true
@@ -250,7 +250,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:coverage || pnpm test
 
-      - uses: SonarSource/sonarqube-scan-action@v4
+      - uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         continue-on-error: true
