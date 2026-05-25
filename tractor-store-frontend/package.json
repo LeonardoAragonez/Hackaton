@@ -10,7 +10,7 @@
     "test": "nx run-many -t test -p ts-design-system,shared-catalog",
     "test:design-system": "nx test ts-design-system",
     "test:shared": "nx test shared-catalog",
-    "test:coverage": "nx run-many -t test --coverage -p ts-design-system,shared-catalog --skip-nx-cache",
+    "test:coverage": "nx run-many -t test --coverage -p ts-design-system,shared-catalog,mfe-explore,mfe-decide,mfe-checkout --skip-nx-cache",
     "build:elements": "nx run ts-design-system:build-elements",
     "e2e": "nx e2e tractor-store-e2e",
     "lint": "nx run-many -t lint",

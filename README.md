@@ -355,6 +355,22 @@ Abre http://localhost:4200.
 
 **Importante:** usa `pnpm start` (shell + 3 remotes). No abras solo el puerto 4201–4203; la tienda vive en **4200**.
 
+**Tests y cobertura (frontend)**
+
+```bash
+cd tractor-store-frontend
+pnpm test:coverage
+# Reportes HTML: coverage/packages/*/index.html
+```
+
+Incluye `shared-catalog`, `ts-design-system` y tests unitarios de selectores en los MFE (`mfe-explore`, `mfe-decide`, `mfe-checkout`).
+
+**SonarCloud — ver cobertura en Summary**
+
+1. Proyecto **Hackaton** → pestaña **Overall Code** (no solo *New Code*; ahí puede decir “not enough lines”).
+2. **Measures** → **Coverage** para el desglose backend / frontend.
+3. Tras push, el job **SonarCloud (Hackaton monorepo)** debe estar verde.
+
 ### Build de producción (local)
 
 ```bash
