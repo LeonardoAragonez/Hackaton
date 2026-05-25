@@ -1,0 +1,43 @@
+{
+  "name": "mfe-checkout",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "che",
+  "sourceRoot": "packages/mfe-checkout/src",
+  "tags": ["scope:checkout", "type:mfe"],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/mfe-checkout",
+        "index": "packages/mfe-checkout/src/index.html",
+        "main": "packages/mfe-checkout/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "packages/mfe-checkout/tsconfig.app.json",
+        "styles": ["packages/design-tokens/src/index.css", "packages/mfe-checkout/src/styles.scss"],
+        "customWebpackConfig": { "path": "packages/mfe-checkout/webpack.config.js" }
+      },
+      "configurations": {
+        "production": { "outputHashing": "all" },
+        "development": { "optimization": false, "sourceMap": true }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:module-federation-dev-server",
+      "options": {
+        "port": 4203,
+        "publicHost": "http://localhost:4203",
+        "buildTarget": "mfe-checkout:build:development"
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": { "executor": "@nx/eslint:lint" },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": { "jestConfig": "packages/mfe-checkout/jest.config.js" }
+    }
+  }
+}

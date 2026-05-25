@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/packages/ts-design-system-elements"
+  },
+  "files": ["src/elements/main.ts"]
+}

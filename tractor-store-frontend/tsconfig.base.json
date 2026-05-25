@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tractor-store/shared-catalog": ["packages/shared-catalog/src/index.ts"],
+      "@tractor-store/design-tokens": ["packages/design-tokens/src/index.css"],
+      "@tractor-store/ts-design-system": ["packages/ts-design-system/src/index.ts"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "exclude": ["node_modules", "tmp"]
+}

@@ -1,0 +1,25 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+tractor:
+  cart:
+    cookie-name: CART_SESSION
+    cookie-max-age-days: 30
+    cookie-path: /
+  cors:
+    allowed-origins:
+      - http://localhost:4200
+
+logging:
+  level:
+    root: WARN
+    com.quind.tractorstore: INFO

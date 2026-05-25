@@ -1,0 +1,30 @@
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Build / cache generados
+/build/
+tractor-store-frontend/.nx/workspace-data/
+
+# Frontend
+tractor-store-frontend/node_modules/
+tractor-store-frontend/dist/
+tractor-store-frontend/.nx/cache/
+tractor-store-frontend/coverage/
+tractor-store-frontend/test-results/
+tractor-store-frontend/playwright-report/
+tractor-store-frontend/blob-report/
+
+# Backend
+tractor-store-backend/target/
+tractor-store-backend/.classpath
+tractor-store-backend/.project
+tractor-store-backend/.settings/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.pem
