@@ -178,7 +178,7 @@ jobs:
           test -s tractor-store-frontend/coverage/lcov.sonar.info
 
       - name: SonarCloud scan (monorepo Hackaton)
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           projectBaseDir: .
           args: -Dsonar.branch.name=${{ github.head_ref || github.ref_name }}
@@ -213,7 +213,7 @@ jobs:
 
       # La action no hereda working-directory; usar projectBaseDir del backend
       - name: SonarCloud scan (backend)
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           projectBaseDir: tractor-store-backend
           args: -Dsonar.branch.name=${{ github.head_ref || github.ref_name }}
@@ -252,7 +252,7 @@ jobs:
 
       # Sin projectBaseDir la action lee sonar-project.properties de la raíz (Java) y falla
       - name: SonarCloud scan (frontend)
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v8
         with:
           projectBaseDir: tractor-store-frontend
           args: -Dsonar.branch.name=${{ github.head_ref || github.ref_name }}
